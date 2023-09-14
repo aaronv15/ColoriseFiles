@@ -1,0 +1,59 @@
+{
+  "name": "colorisefiles",
+  "displayName": "ColoriseFiles",
+  "description": "Simple extension to color code files based on regex patterns",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "File Colorizer",
+      "properties": {
+        "coloriseFiles.patterns": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "glob": {
+                "type": "string",
+                "description": "Regex pattern to match file names"
+              },
+              "color": {
+                "type": "string",
+                "description": "Color for the matched files"
+              }
+            }
+          },
+          "description": "Array of regex patterns and their corresponding colors"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.82.0",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "minimatch": "^9.0.3"
+  }
+}
