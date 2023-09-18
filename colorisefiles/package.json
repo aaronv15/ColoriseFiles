@@ -2,7 +2,7 @@
   "name": "colorisefiles",
   "displayName": "ColoriseFiles",
   "description": "Simple extension to color code files based on regex patterns",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.82.0"
   },
@@ -24,16 +24,21 @@
             "type": "object",
             "properties": {
               "glob": {
-                "type": "string",
-                "description": "Regex pattern to match file names"
+                "type": "array",
+                "default": [],
+                "items": {
+                  "type": "string",
+                  "description": "Glob string"
+                },
+                "description": "Glob strings to match file names"
               },
               "color": {
                 "type": "string",
                 "description": "Color for the matched files"
               }
-            }
-          },
-          "description": "Array of regex patterns and their corresponding colors"
+            },
+            "description": "Array of glob strings and their corresponding colors"
+          }
         }
       }
     }

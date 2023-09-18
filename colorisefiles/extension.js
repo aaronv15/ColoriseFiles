@@ -14,14 +14,13 @@ function ColorDecorationProvider() {
 
 ColorDecorationProvider.prototype.provideFileDecoration = function (uri) {
 	const config = vscode.workspace.getConfiguration('coloriseFiles');
-	if (!config) {
-		return;
-	}
 	const patterns = config.get('patterns', []);
 
 	for (const item of patterns) {
-		if (minimatch.minimatch(uri.fsPath, item.glob)) {
-			return new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor(item.color));
+		for (const globPattern of item.glob) {
+			if (minimatch.minimatch(uri.fsPath, globPattern)) {
+				return new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor(item.color));
+			}
 		}
 	}
 	return undefined;
@@ -39,9 +38,11 @@ function activate(context) {
 			const config = vscode.workspace.getConfiguration('coloriseFiles');
 			const patterns = config.get('patterns', []);
 			patterns.forEach(pattern => {
-				vscode.workspace.findFiles(pattern.glob, '**/node_modules/**').then(files => {
-					files.forEach(file => {
-						provider.provideFileDecoration(file);
+				pattern.glob.forEach(globPattern => {
+					vscode.workspace.findFiles(globPattern, '**/node_modules/**').then(files => {
+						files.forEach(file => {
+							provider.provideFileDecoration(file);
+						});
 					});
 				});
 			});
@@ -54,9 +55,11 @@ function activate(context) {
 		const config = vscode.workspace.getConfiguration('coloriseFiles');
 		const patterns = config.get('patterns', []);
 		patterns.forEach(pattern => {
-			vscode.workspace.findFiles(pattern.glob, '**/node_modules/**').then(files => {
-				files.forEach(file => {
-					provider.provideFileDecoration(file);
+			pattern.glob.forEach(globPattern => {
+				vscode.workspace.findFiles(globPattern, '**/node_modules/**').then(files => {
+					files.forEach(file => {
+						provider.provideFileDecoration(file);
+					});
 				});
 			});
 		});
